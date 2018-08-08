@@ -78,7 +78,8 @@ export default class ContentLoader extends Component {
                 requestAnimationFrame(this._animation);
             }
         }
-        requestAnimationFrame(this._animation);
+
+        this.currentRequestAnimationFrame = requestAnimationFrame(this._animation);
 
         // Setup loop animation
         Animated.sequence([
@@ -96,6 +97,11 @@ export default class ContentLoader extends Component {
             }
         })
     }
+
+    componentWillUnmount() {
+        window.cancelAnimationFrame(this.currentRequestAnimationFrame);
+    }
+
     render() {
         return (
             <View>
