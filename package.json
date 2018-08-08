@@ -23,11 +23,12 @@
     ],
     "peerDependencies": {
         "expo": "16.0.0",
+        "prop-types": "^15.5.10",
         "react": "16.0.0-alpha.6",
-        "react-native": "https://github.com/expo/react-native/archive/sdk-16.0.0.tar.gz",
-        "prop-types": "^15.5.10"
+        "react-native": "https://github.com/expo/react-native/archive/sdk-16.0.0.tar.gz"
     },
     "dependencies": {
+        "babel-preset-react": "^6.24.1",
         "d3-interpolate": "^1.1.5"
     }
 }
