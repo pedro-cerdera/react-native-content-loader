@@ -82,7 +82,7 @@ export default class ContentLoader extends Component {
         this.currentRequestAnimationFrame = requestAnimationFrame(this._animation);
 
         // Setup loop animation
-        Animated.sequence([
+       this.currentAnimated = Animated.sequence([
             Animated.timing(this._animate, {
                 toValue: 1,
                 duration: this.state.frequence
@@ -91,7 +91,8 @@ export default class ContentLoader extends Component {
                 toValue: 0,
                 duration: this.state.frequence
             })
-        ]).start((event) => {
+        ]);
+        this.currentAnimated.start((event) => {
             if (event.finished) {
                 this.loopAnimation()
             }
@@ -99,7 +100,8 @@ export default class ContentLoader extends Component {
     }
 
     componentWillUnmount() {
-        window.cancelAnimationFrame(this.currentRequestAnimationFrame);
+        cancelAnimationFrame(this.currentRequestAnimationFrame);
+        this.currentAnimated.stop();
     }
 
     render() {
