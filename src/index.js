@@ -1,8 +1,9 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types'
-import {View, StyleSheet, Animated} from 'react-native';
+import { View, StyleSheet, Animated } from 'react-native';
 
-import Svg, {Circle,
+import Svg, {
+    Circle,
     Ellipse,
     G,
     LinearGradient,
@@ -17,11 +18,13 @@ import Svg, {Circle,
     Text,
     Use,
     Defs,
-    Stop} from 'react-native-svg';
+    Stop
+} from 'react-native-svg';
 const AnimatedSvg = Animated.createAnimatedComponent(Svg);
-const {interpolate} = require('d3-interpolate');
+const { interpolate } = require('d3-interpolate');
 
 export default class ContentLoader extends Component {
+    unmount = false;
     constructor(props) {
         super(props);
 
@@ -38,7 +41,7 @@ export default class ContentLoader extends Component {
         this.loopAnimation = this
             .loopAnimation
             .bind(this)
-    }   
+    }
     offsetValueBound(x) {
         if (x > 1) {
             return '1'
@@ -73,7 +76,7 @@ export default class ContentLoader extends Component {
             offsetValues[0] = this.offsetValueBound(newState.offsetValues[0]);
             offsetValues[1] = this.offsetValueBound(newState.offsetValues[1]);
             offsetValues[2] = this.offsetValueBound(newState.offsetValues[2]);
-            this.setState({offsets: offsetValues});
+            if (!this.unmount) { this.setState({ offsets: offsetValues }); }
             if (t < 1) {
                 requestAnimationFrame(this._animation);
             }
@@ -82,7 +85,7 @@ export default class ContentLoader extends Component {
         this.currentRequestAnimationFrame = requestAnimationFrame(this._animation);
 
         // Setup loop animation
-       this.currentAnimated = Animated.sequence([
+        this.currentAnimated = Animated.sequence([
             Animated.timing(this._animate, {
                 toValue: 1,
                 duration: this.state.frequence
@@ -93,13 +96,14 @@ export default class ContentLoader extends Component {
             })
         ]);
         this.currentAnimated.start((event) => {
-            if (event.finished) {
+            if (event.finished && !this.unmount) {
                 this.loopAnimation()
             }
         })
     }
 
     componentWillUnmount() {
+        this.unmount = true;
         cancelAnimationFrame(this.currentRequestAnimationFrame);
         this.currentAnimated.stop();
     }
@@ -113,15 +117,15 @@ export default class ContentLoader extends Component {
                             <Stop
                                 offset={this.state.offsets[0]}
                                 stopColor={this.props.primaryColor}
-                                stopOpacity="1"/>
+                                stopOpacity="1" />
                             <Stop
                                 offset={this.state.offsets[1]}
                                 stopColor={this.props.secondaryColor}
-                                stopOpacity="1"/>
+                                stopOpacity="1" />
                             <Stop
                                 offset={this.state.offsets[2]}
                                 stopColor={this.props.primaryColor}
-                                stopOpacity="1"/>
+                                stopOpacity="1" />
                         </LinearGradient>
                         <ClipPath id="clip">
                             <G>
@@ -136,7 +140,7 @@ export default class ContentLoader extends Component {
                         height={this.props.height}
                         width={this.props.width}
                         fill="url(#grad)"
-                        clipPath="url(#clip)"/>
+                        clipPath="url(#clip)" />
                 </AnimatedSvg>
             </View>
         );
