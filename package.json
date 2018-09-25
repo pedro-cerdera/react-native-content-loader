@@ -1,6 +1,6 @@
 {
     "name": "react-native-content-loader",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "description": "Animated linear gradient for React Native Svg (without Expo)",
     "repository": {
         "type": "git",
